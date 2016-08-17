@@ -66,6 +66,11 @@
 		<dependencies>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>sdr-model-gen</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>sdr-model-gen-annotation</artifactId>
 				<version>${project.version}</version>
 			</dependency>

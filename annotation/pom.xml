@@ -5,10 +5,10 @@
 
 	<parent>
 		<groupId>uk.co.blackpepper.sdr-client</groupId>
-		<artifactId>sdr-client-parent</artifactId>
+		<artifactId>sdr-model-gen-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>sdr-client-annotation</artifactId>
+	<artifactId>sdr-model-gen-annotation</artifactId>
 
 </project>

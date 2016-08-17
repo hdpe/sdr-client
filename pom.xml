@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>uk.co.blackpepper.sdr-client</groupId>
-	<artifactId>sdr-client-parent</artifactId>
+	<artifactId>sdr-model-gen-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -66,7 +66,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>sdr-client-gen-annotation</artifactId>
+				<artifactId>sdr-model-gen-annotation</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			

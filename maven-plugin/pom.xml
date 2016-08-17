@@ -5,17 +5,17 @@
 
 	<parent>
 		<groupId>uk.co.blackpepper.sdr-client</groupId>
-		<artifactId>sdr-client-parent</artifactId>
+		<artifactId>sdr-model-gen-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>sdr-client-gen-maven-plugin</artifactId>
+	<artifactId>sdr-model-gen-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>sdr-client-gen</artifactId>
+			<artifactId>sdr-model-gen</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

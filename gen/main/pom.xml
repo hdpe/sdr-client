@@ -18,15 +18,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>sdr-client-annotation</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
 			<artifactId>sdr-client-gen-annotation</artifactId>
 		</dependency>
+		
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>sdr-client</artifactId>
+			<groupId>uk.co.blackpepper.hal-client</groupId>
+			<artifactId>hal-client</artifactId>
 		</dependency>
 
 		<dependency>

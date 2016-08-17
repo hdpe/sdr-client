@@ -16,15 +16,13 @@ import org.jboss.forge.roaster.model.source.PropertySource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import uk.co.blackpepper.sdrclient.EmbeddedChildDeserializer;
-import uk.co.blackpepper.sdrclient.annotation.EmbeddedResource;
-import uk.co.blackpepper.sdrclient.annotation.EmbeddedResources;
+import uk.co.blackpepper.hal.client.EmbeddedChildDeserializer;
+import uk.co.blackpepper.hal.client.annotation.LinkedResource;
+import uk.co.blackpepper.hal.client.annotation.RemoteResource;
+import uk.co.blackpepper.hal.client.annotation.ResourceId;
 import uk.co.blackpepper.sdrclient.gen.AnnotationRegistry.AnnotationMappingCondition;
-import uk.co.blackpepper.sdrclient.gen.AnnotationRegistry.AnnotationTargetType;
-import uk.co.blackpepper.sdrclient.gen.annotation.IdAccessor;
-import uk.co.blackpepper.sdrclient.gen.annotation.IdField;
-import uk.co.blackpepper.sdrclient.gen.annotation.LinkedResource;
-import uk.co.blackpepper.sdrclient.gen.annotation.RemoteResource;
+import uk.co.blackpepper.sdrclient.gen.annotation.EmbeddedResource;
+import uk.co.blackpepper.sdrclient.gen.annotation.EmbeddedResources;
 import uk.co.blackpepper.sdrclient.gen.model.Annotation;
 import uk.co.blackpepper.sdrclient.gen.model.ClassSource;
 import uk.co.blackpepper.sdrclient.gen.model.Field;
@@ -40,15 +38,10 @@ public class Generator {
 
 		annotationRegistry.registerAnnotationMapping(
 				javax.persistence.Id.class.getName(),
-				IdAccessor.class.getName());
+				ResourceId.class.getName());
 		
 		annotationRegistry.registerAnnotationMapping(
-				javax.persistence.Id.class.getName(),
-				IdField.class.getName(),
-				AnnotationTargetType.FIELD);
-		
-		annotationRegistry.registerAnnotationMapping(
-				uk.co.blackpepper.sdrclient.annotation.RestRepository.class.getName(),
+				uk.co.blackpepper.sdrclient.gen.annotation.RestRepository.class.getName(),
 				RemoteResource.class.getName());
 		
 		annotationRegistry.registerAnnotationMapping(
@@ -94,7 +87,7 @@ public class Generator {
 				.setPackage(targetPackageName);
 		
 		Annotation remoteResourceAnnotation = getAnnotation(source,
-				uk.co.blackpepper.sdrclient.annotation.RestRepository.class);
+				uk.co.blackpepper.sdrclient.gen.annotation.RestRepository.class);
 		
 		if (remoteResourceAnnotation != null) {
 			result.addAnnotation(RemoteResource.class)
@@ -145,17 +138,10 @@ public class Generator {
 		return new AnnotationApplicator() {
 			
 			@Override
-			public void apply(String fullyQualifiedAnnotationName, Map<String, Object> annotationAttributes,
-				AnnotationTargetType targetType) {
+			public void apply(String fullyQualifiedAnnotationName, Map<String, Object> annotationAttributes) {
 				
-				AnnotationSource<?> annotation;
-				
-				if (targetType == AnnotationTargetType.FIELD) {
-					annotation = property.getField().addAnnotation(fullyQualifiedAnnotationName);
-				}
-				else {
-					annotation = property.getAccessor().addAnnotation(fullyQualifiedAnnotationName);
-				}
+				AnnotationSource<?> annotation = property.getAccessor()
+					.addAnnotation(fullyQualifiedAnnotationName);
 				
 				for (Entry<String, Object> attr : annotationAttributes.entrySet()) {
 					if (attr.getValue() instanceof Class<?>) {

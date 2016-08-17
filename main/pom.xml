@@ -5,7 +5,7 @@
 
 	<parent>
 		<groupId>uk.co.blackpepper.sdr-client</groupId>
-		<artifactId>sdr-client-gen-parent</artifactId>
+		<artifactId>sdr-client-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 

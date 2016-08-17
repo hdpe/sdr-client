@@ -18,7 +18,9 @@
 	</properties>
 
 	<modules>
-		<module>gen</module>
+		<module>annotation</module>
+		<module>main</module>
+		<module>maven-plugin</module>
 	</modules>
 	
 	<build>

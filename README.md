@@ -1,18 +1,17 @@
-# Spring Data REST Client #
+# Spring Data REST Model Generator #
 
-A client-side data model generator and client framework for a JPA Spring Data REST-provided API.
+A client-side data model generator for a JPA Spring Data REST-provided API.
 
-Primarily intended to provide a convenient means for the setup and tear-down of data for use in automated acceptance tests.
+The `hal-client` generic client framework can then leverage this generated model to provide a simple, link-traversing client for the source API. This is primarily intended to provide a convenient means for the setup, query and tear-down of data in automated acceptance tests.
 
 ## Building ##
 
-To build and install into the local Maven repository:
+Download and install [hdr-client](https://github.com/hdpe/hal-client) first.
+
+Then, to build and install into the local Maven repository:
 
 `mvn install`
 
-To run the integration tests:
-
-`mvn verify -PrunITs`
 
 ## Quickstart ##
 
@@ -39,19 +38,14 @@ Create a new Maven `pom.xml` with the following content:
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
-		<sdr-client.version>0.0.1-SNAPSHOT</sdr-client.version>
+		<sdr-model-gen.version>0.0.1-SNAPSHOT</sdr-model-gen.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>uk.co.blackpepper.sdr-client</groupId>
-			<artifactId>sdr-client</artifactId>
-			<version>${sdr-client.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>uk.co.blackpepper.sdr-client</groupId>
-			<artifactId>sdr-client-annotation</artifactId>
-			<version>${sdr-client.version}</version>
+			<groupId>uk.co.blackpepper.sdr.model.gen</groupId>
+			<artifactId>sdr-model-gen</artifactId>
+			<version>${sdr-model-gen.version}</version>
 		</dependency>
 
 		<dependency>
@@ -130,9 +124,9 @@ Add the following to your `pom.xml`:
 <build>
   <plugins>
     <plugin>
-      <groupId>uk.co.blackpepper.sdr-client</groupId>
-      <artifactId>sdr-client-gen-maven-plugin</artifactId>
-      <version>${sdr-client.version}</version>
+      <groupId>uk.co.blackpepper.sdr.model.gen</groupId>
+      <artifactId>sdr-model-gen-maven-plugin</artifactId>
+      <version>${sdr-model-gen.version}</version>
       <executions>
         <execution>
           <goals>
@@ -148,24 +142,24 @@ Add the following to your `pom.xml`:
 </build>
 ```
 
-Rebuild your application and you should see the following file has been generated in `target/generated-sources/sdr-client/greeting/model/client`:
+Rebuild your application and you should see the following file has been generated in `target/generated-sources/sdr-model/greeting/model/client`:
 
 ```java
 package greeting.model.client;
 
-import uk.co.blackpepper.sdrclient.gen.annotation.RemoteResource;
+import uk.co.blackpepper.hal.client.annotation.RemoteResource;
 import java.net.URI;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import uk.co.blackpepper.sdrclient.gen.annotation.IdField;
+import uk.co.blackpepper.hal.client.annotation.ResourceId;
 
 @RemoteResource("/greetings")
 public class Greeting {
 
-	@IdField
 	private URI id;
 	private String message;
 
 	@JsonIgnore
+	@ResourceId
 	public URI getId() {
 		return id;
 	}
@@ -212,23 +206,25 @@ public class GreetingTest {
 }
 ```
 
-(ensuring you import the *generated* `Greeting` class from `greeting.model.client`.) Ensure the server application is running, and run the test to verify it passes!
+ensuring you import the *generated* `Greeting` class from `greeting.model.client`.
+
+Check the server application is still running, and run the test to verify it passes!
 
 ## But, in real life... ##
 
-Obviously the above example is pretty contrived, as the same result could be achieved just by using the original `@Entity` class and Spring's `RestTemplate`. See the tests in `sdr-client-test-it` for the more worthwhile demonstrations of this tool described below.
+Obviously the above example is pretty contrived, as the same result could be achieved just by using the original `@Entity` class and Spring's `RestTemplate`.
 
-### Assocations ###
+### Associations ###
 
  The power comes when associations between entities are introduced - when navigating entity associations via the client data model accessors, HTTP requests will be issued to lazily retrieve the associated objects, transparently navigating the HATEOAS links in the returned HAL JSON.
 
 ### Data model artifact ###
 
-The other primary motivation for this tool is so that a data model can be generated for use by a client application that does *not* have a dependency on the server application code. For this, it is suggested that you generate the data model into a separate artifact, which imports the server project as an *optional* dependency so it is not resolved by the client application transitively. See the `sdr-client-test-client` module for an example of this.
+The other primary motivation for this tool is so that a data model can be generated for use by a client application that does *not* have a dependency on the server application code. For this, it is suggested that you generate the data model into a separate artifact, which imports the server project as an *optional* dependency so it is not resolved by the client application transitively.
 
 ## Usage ##
 
-### Entity assocations ###
+### Entity associations ###
 
 #### Class level ####
 
@@ -259,6 +255,6 @@ There are plenty of things still to do with this:
 * back-references to embedded associations' contexts should be supported
 * support generation from more than one package
 * test coverage needs to be hardened up significantly
-* investigate whether it's possible to do away with the user annotations in `sdr-client-annotation` and derive this data from the Spring Data REST repository model
+* remove @RestRepository and derive the repository path from the Spring Data REST repository model
 * improve flaky m2e integration
 * ...
